@@ -1,7 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FiEdit2, FiSave, FiMail, FiPhone, FiMapPin, FiBriefcase, FiStar, FiShoppingBag } from "react-icons/fi";
+import {
+  FiEdit2,
+  FiSave,
+  FiMail,
+  FiPhone,
+  FiMapPin,
+  FiBriefcase,
+  FiStar,
+  FiShoppingBag,
+} from "react-icons/fi";
 
 type UMKM = {
   namaUsaha: string;
@@ -34,7 +43,17 @@ export default function ProfileUMKM() {
   }, []);
 
   const handleSave = () => {
-    localStorage.setItem("currentUMKM", JSON.stringify(umkm));
+    // Jika deskripsi kosong, otomatis isi dengan produk/layanan
+    const finalUMKM = {
+      ...umkm,
+      deskripsi:
+        umkm.deskripsi.trim() === "" && umkm.produk.length > 0
+          ? umkm.produk.join(", ")
+          : umkm.deskripsi,
+    };
+
+    localStorage.setItem("currentUMKM", JSON.stringify(finalUMKM));
+    setUmkm(finalUMKM);
     setIsEditing(false);
   };
 
@@ -61,7 +80,9 @@ export default function ProfileUMKM() {
 
         {/* Nama Usaha */}
         <div className="mb-6">
-          <label className="block text-sm font-semibold text-gray-600 mb-2">Nama Usaha</label>
+          <label className="block text-sm font-semibold text-gray-600 mb-2">
+            Nama Usaha
+          </label>
           {isEditing ? (
             <input
               type="text"
@@ -77,7 +98,9 @@ export default function ProfileUMKM() {
         {/* Email & Telepon */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
-            <label className="block text-sm font-semibold text-gray-600 mb-2">Email</label>
+            <label className="block text-sm font-semibold text-gray-600 mb-2">
+              Email
+            </label>
             {isEditing ? (
               <input
                 type="email"
@@ -93,7 +116,9 @@ export default function ProfileUMKM() {
             )}
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-600 mb-2">Telepon</label>
+            <label className="block text-sm font-semibold text-gray-600 mb-2">
+              Telepon
+            </label>
             {isEditing ? (
               <input
                 type="text"
@@ -113,7 +138,9 @@ export default function ProfileUMKM() {
         {/* Lokasi & Kategori */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
-            <label className="block text-sm font-semibold text-gray-600 mb-2">Lokasi</label>
+            <label className="block text-sm font-semibold text-gray-600 mb-2">
+              Lokasi
+            </label>
             {isEditing ? (
               <input
                 type="text"
@@ -129,13 +156,17 @@ export default function ProfileUMKM() {
             )}
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-600 mb-2">Kategori Usaha</label>
+            <label className="block text-sm font-semibold text-gray-600 mb-2">
+              Kategori Usaha
+            </label>
             {isEditing ? (
               <input
                 type="text"
                 placeholder="Pisahkan dengan koma"
                 value={umkm.kategori.join(", ")}
-                onChange={(e) => setUmkm({ ...umkm, kategori: e.target.value.split(",") })}
+                onChange={(e) =>
+                  setUmkm({ ...umkm, kategori: e.target.value.split(",") })
+                }
                 className={inputClass}
               />
             ) : (
@@ -149,26 +180,39 @@ export default function ProfileUMKM() {
 
         {/* Deskripsi Usaha */}
         <div className="mb-6">
-          <label className="block text-sm font-semibold text-gray-600 mb-2">Deskripsi Usaha</label>
+          <label className="block text-sm font-semibold text-gray-600 mb-2">
+            Deskripsi Usaha
+          </label>
           {isEditing ? (
             <textarea
               value={umkm.deskripsi}
-              onChange={(e) => setUmkm({ ...umkm, deskripsi: e.target.value })}
+              onChange={(e) =>
+                setUmkm({ ...umkm, deskripsi: e.target.value })
+              }
+              placeholder="Isi deskripsi usaha (jika kosong, akan otomatis sama dengan produk)"
               className={inputClass + " h-32 resize-none"}
             />
           ) : (
-            <div className={cardClass}>{umkm.deskripsi || "-"}</div>
+            <div className={cardClass + " whitespace-pre-line"}>
+                {umkm.deskripsi.trim()
+                    ? umkm.deskripsi
+                    : umkm.produk.join(", ") || "-"}
+           </div>
           )}
         </div>
 
-        {/* Produk */}
+        {/* Produk / Layanan */}
         <div className="mb-6">
-          <label className="block text-sm font-semibold text-gray-600 mb-2">Produk / Layanan</label>
+          <label className="block text-sm font-semibold text-gray-600 mb-2">
+            Produk / Layanan
+          </label>
           {isEditing ? (
             <textarea
               placeholder="Tulis produk atau layanan, pisahkan baris"
               value={umkm.produk.join("\n")}
-              onChange={(e) => setUmkm({ ...umkm, produk: e.target.value.split("\n") })}
+              onChange={(e) =>
+                setUmkm({ ...umkm, produk: e.target.value.split("\n") })
+              }
               className={inputClass + " h-32 resize-none"}
             />
           ) : (
@@ -189,11 +233,27 @@ export default function ProfileUMKM() {
 
         {/* Rating */}
         <div className="mb-8">
-          <label className="block text-sm font-semibold text-gray-600 mb-2">Rating</label>
-          <div className={cardClass}>
-            <FiStar className="text-yellow-400 text-xl mt-1" />
-            <span className="font-medium">{umkm.rating}</span>
-          </div>
+          <label className="block text-sm font-semibold text-gray-600 mb-2">
+            Rating
+          </label>
+          {isEditing ? (
+            <input
+              type="number"
+              min="0"
+              max="5"
+              step="0.1"
+              value={umkm.rating}
+              onChange={(e) =>
+                setUmkm({ ...umkm, rating: parseFloat(e.target.value) })
+              }
+              className={inputClass}
+            />
+          ) : (
+            <div className={cardClass}>
+              <FiStar className="text-yellow-400 text-xl mt-1" />
+              <span className="font-medium">{umkm.rating}</span>
+            </div>
+          )}
         </div>
 
         {/* Button Simpan */}
