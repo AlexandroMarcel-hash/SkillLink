@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "SkillLink – Digital Talent Exchange",
   description: "Platform digital yang menghubungkan mahasiswa berbakat dengan UMKM.",
+  icons: {
+    icon: "/logo (2).png",       
+  },
 };
 
 export default function RootLayout({
