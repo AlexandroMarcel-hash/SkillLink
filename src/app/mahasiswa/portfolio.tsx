@@ -9,19 +9,19 @@ export default function Portfolio() {
     {
       project: "Landing Page UMKM",
       description: "Membuat UI/UX landing page untuk UMKM",
-      image: "https://source.unsplash.com/400x250/?website,design",
+      image: "/1.jpeg",
       link: "#",
     },
     {
       project: "Aplikasi Reservasi",
       description: "Mengembangkan front-end aplikasi reservasi",
-      image: "https://source.unsplash.com/400x250/?app,code",
+      image: "/2.jpeg",
       link: "#",
     },
     {
       project: "Branding Sosial Media",
       description: "Desain konten kreatif untuk UMKM",
-      image: "https://source.unsplash.com/400x250/?branding,design",
+      image: "/3.png",
       link: "#",
     },
   ];
